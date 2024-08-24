@@ -2,7 +2,12 @@ import React, { useState } from "react";
 import { ReactComponent as DisplayIcon } from "../images/display.svg";
 import { ReactComponent as ArrowIcon } from "../images/down.svg";
 
-const FilterBar = () => {
+const FilterBar = ({
+  grouping,
+  sorting,
+  handleGroupChange,
+  handleSortingChange,
+}) => {
   const [popup, setPopup] = useState(false);
 
   const popupOpen = () => {
@@ -30,7 +35,12 @@ const FilterBar = () => {
               >
                 Grouping:
               </label>
-              <select id="grouping" className="filter-select">
+              <select
+                id="grouping"
+                value={grouping}
+                onChange={handleGroupChange}
+                className="filter-select"
+              >
                 <option value="status">Status</option>
                 <option value="user">User</option>
                 <option value="priority">Priority</option>
@@ -44,7 +54,12 @@ const FilterBar = () => {
               >
                 Ordering:
               </label>
-              <select id="sorting" className="filter-select">
+              <select
+                id="sorting"
+                value={sorting}
+                onChange={handleSortingChange}
+                className="filter-select"
+              >
                 <option value="priority">Priority</option>
                 <option value="title">Title</option>
               </select>

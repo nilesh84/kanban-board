@@ -153,6 +153,12 @@ body {
   overflow-x: auto;
 }
 
+.kanban-column{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
 .card {
   background-color: rgba(var(--white), 1);
   border: 0.0625rem solid #e7e7e8;
@@ -160,7 +166,7 @@ body {
   padding: 1.125rem 0.938rem 1rem 1.125rem;
   box-shadow: 0 0.125rem 0.25rem 0 rgba(var(--black), 0.05);
   position: relative;
-  flex: 1;
+  margin-bottom: 10px;
 }
 
 .card-cam {

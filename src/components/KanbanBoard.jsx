@@ -1,30 +1,44 @@
-import React, { useState } from "react";
-import useFetch from "../hooks/useFetch";
+import React from "react";
 import Cards from "./Cards";
 
-const KanbanBoard = () => {
-  const { data, loading, error } = useFetch(
-    "https://api.quicksell.co/v1/internal/frontend-assignment"
-  );
+const KanbanBoard = ({ tickets, grouping, sorting }) => {
+  const getGroupedTickets = () => {
+    const grouped = tickets.reduce((acc, ticket) => {
+      const key = ticket[grouping];
+      if (!acc[key]) {
+        acc[key] = [];
+      }
+      acc[key].push(ticket);
+      return acc;
+    }, {});
 
-  const [grouping, setGrouping] = useState("status");
-  const [sorting, setSorting] = useState("priority");
+    return Object.keys(grouped).map((key) => ({
+      group: key,
+      tickets: grouped[key],
+    }));
+  };
 
-  if (loading) {
-    return (
-      <div className="loading-msg">
-        <span className="loading-spinner"></span> Loading...
-      </div>
-    );
-  }
+  const sortTickets = (tickets) => {
+    if (sorting === "priority") {
+      return tickets.sort((a, b) => b.priority - a.priority);
+    } else if (sorting === "title") {
+      return tickets.sort((a, b) => a.title.localeCompare(b.title));
+    }
+    return tickets;
+  };
 
-  if (error) {
-    return <div className="error-msg">{error}</div>;
-  }
+  const groupedTickets = getGroupedTickets();
 
   return (
     <div className="kanban-board-container">
-      <Cards data={data} />
+      {groupedTickets.map((group) => (
+        <div key={group.group} className="kanban-column">
+          <h2>{group.group}</h2>
+          {sortTickets(group.tickets).map((ticket) => (
+            <Cards key={ticket.id} ticket={ticket} />
+          ))}
+        </div>
+      ))}
     </div>
   );
 };
